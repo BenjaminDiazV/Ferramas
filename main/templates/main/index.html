@@ -28,11 +28,25 @@
         <div class="formulario">
             <h1>Consultar producto</h1>
             <div class="campo">
-                <h3>Código de producto:</h3>
-                <input type="text" id="nombre" name="nombre">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <pre>Código de producto:   <input type="number" id="id_producto" name="id_producto"></pre>
+
+                    <button type="submit">Ingresar</button>
+                </form>
             </div>
-            <button>Ingresar</button>
         </div>
+
+        <div class="formulario">
+            {% if producto %}
+                <h2>Detalles del producto</h2>
+                <p>Nombre:  {{ producto.nom_producto }}</p>
+                <p>Categoria: {{ producto.categoria }}</p>
+                <p>Marca: {{ producto.marca }}</p>
+                <P>Precio : {{ producto.valor }}</P>
+            {% endif %}
+        </div>
+
     </main>
 
     <footer>
