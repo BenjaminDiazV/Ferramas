@@ -4,9 +4,13 @@ html, body {
     flex-direction: column;
 }
 
-header {
-    background-color: rgb(238, 238, 238);
-    padding: 20px;
+section {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 main {
@@ -14,7 +18,7 @@ main {
     padding: 20px;
     flex-grow: 1;
     justify-content: center;
-    display: flex;
+    flex-direction: column;
 }
 
 footer {
@@ -23,27 +27,6 @@ footer {
     height: 20%;
 }
 
-.cabecera {
-    display: flex;
-}
-
-.c1 {
-    width: 10%;
-    text-align: center;
-    border: 2px solid;
-}
-
-.c2 {
-    width: 30%;
-    text-align: center;
-    border: 2px solid;
-}
-
-.c3 {
-    width: 60%;
-    text-align: center;
-    border: 2px solid;
-}
 
 .formulario {
     text-align: center;
@@ -57,5 +40,30 @@ footer {
     justify-content: center;
 }
 
-.pie {
+.productos {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.cuadrado {
+    width: 50%;
+    /* Ancho relativo al contenedor */
+    background-color: lightblue;
+    /* Solo para visualizar */
+}
+
+.titulo-noSub {
+    text-decoration: none;
+}
+
+.contenedor-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contenedor-item h3 {
+    color: black;
+    text-decoration: none;
 }
