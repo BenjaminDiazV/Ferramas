@@ -14,3 +14,7 @@ class Producto(models.Model):
     categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE, db_column='idCategoria')
     marca = models.CharField(max_length=100,null=False)
     valor = models.IntegerField()
+    stock = models.IntegerField(null=False, blank=True)
+
+    def __str__(self):
+        return str(self.nom_producto)

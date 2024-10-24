@@ -22,6 +22,7 @@
                             <th>Categoria</th>
                             <th>Marca</th>
                             <th>Valor</th>
+                            <th>Stock</th>
                             <th>Modificar</th>
                             <th>Eliminar</th>
                         </thead>
@@ -34,6 +35,7 @@
                                 <td>{{tmp.categoria}}</td>
                                 <td>{{tmp.marca}}</td>
                                 <td>{{tmp.valor}}</td>
+                                <td>{{tmp.stock}}</td>
                                 <td><a href="{% url 'prod_findEdit' pk=tmp.id_producto %}"><button class="btn btn-warning">Modificar</button></a></td>
                                 <td><a href="{% url 'prod_del' pk=tmp.id_producto %}"><button class="btn btn-class danger bg-light">Eliminar</button></a></td>
                             </tr>

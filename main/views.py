@@ -1,13 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login as auth_login
 from .models import Producto, Categoria
-from .forms import ProductoForm
+
 
 # Create your views here.
+
+def grupo_cliente(user):
+    return user.groups.filter(name='cliente').exists()
+
+def grupo_inventario(user):
+    return user.groups.filter(name='inventario').exists()
 
 def index(request):
     context={}
     
     return render(request, 'pages/index.html', context)
+
+def carrito(request):
+    context={}
+
+    return render(request,'pages/carrito.html',context)
 
 def catalogo(request):
     producto = None
@@ -18,6 +30,31 @@ def catalogo(request):
     
 
     return render(request, 'pages/catalogo.html', {'producto':producto})
+
+def herramientas(request):
+    context={
+
+    }
+    return render(request,'pages/herramientas.html',context)
+
+def muebles(request):
+    context={
+
+    }
+    return render(request,'pages/muebles.html',context)
+
+def seguridad(request):
+    context={
+
+    }
+    return render(request,'pages/seguridad.html',context)
+
+def proteccion(request):
+    context={
+
+    }
+    return render(request,'pages/proteccion.html',context)
+
 
 def inventario(request):
     productos = Producto.objects.all()
@@ -74,6 +111,7 @@ def prod_add(request):
         categoria = request.POST["categoria"]
         marca = request.POST["marca"]
         valor = request.POST["valor"]
+        stock = request.Post["stock"]
 
         objCategoria = Categoria.objects.get(id_categoria = categoria)
         obj = Producto.objects.create(
@@ -82,6 +120,7 @@ def prod_add(request):
             categoria = objCategoria,
             marca = marca,
             valor = valor,
+            stock = stock,
         )
         obj.save()
         context = {
@@ -97,9 +136,10 @@ def producto_edit(request):
         categoria = request.POST.get("categoria")
         marca = request.POST.get("marca")
         valor = request.POST.get("valor")
+        stock = request.POST.get("stock")
 
         # Validamos que todos los campos requeridos están presentes
-        if not id_prod or not nombre or not categoria or not marca or not valor:
+        if not id_prod or not nombre or not categoria or not marca or not valor or not stock:
             # Manejo del error si falta alguno de los campos
             categorias = Categoria.objects.all()
             context = {
@@ -128,6 +168,7 @@ def producto_edit(request):
         producto.categoria = objCategoria
         producto.marca = marca
         producto.valor = valor
+        producto.stock = stock
 
         # Guardar el producto modificado
         producto.save()
@@ -148,4 +189,13 @@ def producto_edit(request):
             "categorias": categorias,
         }
         return render(request, "pages/producto_edit.html", context)
+
+
+def login(request):
+
+    return render(request, 'pages/login.html')
+
+def logout(request):
+    logout(request)
+    return redirect('pages/login.html')
 
