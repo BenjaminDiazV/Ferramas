@@ -15,4 +15,8 @@ urlpatterns = [
     path("prod_findEdit/<str:pk>", views.prod_findEdit, name = "prod_findEdit"),
     path("producto_edit", views.producto_edit, name = "producto_edit"),
     path('login', views.login, name='login'),
+    path('success', views.exito, name='success'),
+    path('failure', views.mal, name='failure'),
+    path('pagar', views.pagar, name='pagar'),
+    path('transaccion_completa',views.transaccion_completa ,name='transaccion_completa')
 ]

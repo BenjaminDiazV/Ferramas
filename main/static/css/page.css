@@ -24,11 +24,7 @@ main {
     background-color: rgb(31, 31, 31);
 }
 
-footer {
-    background-color: rgb(238, 238, 238);
-    padding: 20px;
-    height: 20%;
-}
+
 
 
 .formulario {
@@ -69,4 +65,57 @@ footer {
 .contenedor-item h3 {
     color: black;
     text-decoration: none;
+}
+
+.footer {
+    padding: 80px 0;
+}
+
+.footer-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.footer-links {
+    width: 25%;
+    margin: 0;
+    padding: 15px 15px;
+    box-sizing: border-box;
+
+}
+
+.footer-links h4 {
+    font-size: 20px;
+    margin-bottom: 25px;
+    font-weight: 500;
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links ul li a {
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.social-links a {
+    display: inline-block;
+    min-height: 40px;
+    width: 40px;
+    margin: 0 10px 10px 0;
+    text-align: center;
+    line-height: 40px;
+}
+
+.social-links a i {
+    color: white;
+    width: 40px;
+    height: 40px;
 }

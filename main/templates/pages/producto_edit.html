@@ -22,6 +22,7 @@
                         <div class="form-floating mb-3 w-50 mx-auto">
                             <input type="text" class="form-control" id="nombre" name="nombre">
                             <label for="nombre">Nombre</label>
+                            <button type="submit" name="modificar_nombre" class="btn btn-primary">modificar</button>
                         </div>
 
                         <div class="form-floating mb-3 w-50 mx-auto">
@@ -34,19 +35,23 @@
                                 {% endfor %}
                             </select>
                             <label for="categoria">Categoria</label>
+                            <button type="submit" name="modificar_categoria" class="btn btn-primary">modificar</button>
                         </div>
 
                         <div class="form-floating mb-3 w-50 mx-auto">
                             <input type="text" class="form-control" id="marca" name="marca">
                             <label for="marca">Marca</label>
+                            <button type="submit" name="modificar_marca" class="btn btn-primary">modificar</button>
                         </div>
                         <div class="form-floating mb-3 w-25 mx-auto">
                             <input type="number" class="form-control" id="valor" name="valor">
                             <label for="valor" class="form-label">Valor</label>
+                            <button type="submit" name="modificar_valor" class="btn btn-primary">modificar</button>
                         </div>
                         <div class="form-floating mb-3 w-25 mx-auto">
                             <input type="number" class="form-control" id="stock" name="stock">
                             <label for="stock" class="form-label">Stock</label>
+                            <button type="submit" name="modificar_stock" class="btn btn-primary">modificar</button>
                         </div>
 
                         <div>
@@ -57,7 +62,6 @@
                             {% endif %}
                         </div>
                         <div>
-                            <button type="submit" class="btn btn-primary">modificar</button>
                             <a href="{% url 'inventario' %}">
                                 <button type="button">Volver</button>
                             </a>

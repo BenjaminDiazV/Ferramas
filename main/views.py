@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as auth_login
+# from django.contrib.auth import authenticate, login as auth_login
 from .models import Producto, Categoria
-
+from transbank.webpay.webpay_plus.transaction import Transaction
+from django.conf import settings
 
 # Create your views here.
 
@@ -132,18 +133,12 @@ def producto_edit(request):
     if request.method == "POST":
 
         id_prod = request.POST.get("id_prod")
-        nombre = request.POST.get("nombre")
-        categoria = request.POST.get("categoria")
-        marca = request.POST.get("marca")
-        valor = request.POST.get("valor")
-        stock = request.POST.get("stock")
-
-        # Validamos que todos los campos requeridos están presentes
-        if not id_prod or not nombre or not categoria or not marca or not valor or not stock:
-            # Manejo del error si falta alguno de los campos
+        
+        # Verificamos si el ID del producto está presente
+        if not id_prod:
             categorias = Categoria.objects.all()
             context = {
-                "mensaje": "Error: Faltan datos en el formulario",
+                "mensaje": "Error: Producto no especificado",
                 "categorias": categorias,
             }
             return render(request, "pages/producto_edit.html", context)
@@ -160,15 +155,31 @@ def producto_edit(request):
             }
             return render(request, "pages/producto_edit.html", context)
 
-        # Obtener la categoría seleccionada
-        objCategoria = Categoria.objects.get(id_categoria=categoria)
+        if 'modificar_nombre' in request.POST:
+            nombre = request.POST.get("nombre")
+            if nombre:
+                producto.nom_producto = nombre
 
-        # Actualizar los campos del producto existente
-        producto.nom_producto = nombre  # Asegúrate de usar los nombres correctos de los campos
-        producto.categoria = objCategoria
-        producto.marca = marca
-        producto.valor = valor
-        producto.stock = stock
+        elif 'modificar_categoria' in request.POST:
+            categoria_id = request.POST.get("categoria")
+            if categoria_id:
+                objCategoria = Categoria.objects.get(id_categoria=categoria_id)
+                producto.categoria = objCategoria
+
+        elif 'modificar_marca' in request.POST:
+            marca = request.POST.get("marca")
+            if marca:
+                producto.marca = marca
+
+        elif 'modificar_valor' in request.POST:
+            valor = request.POST.get("valor")
+            if valor:
+                producto.valor = valor
+
+        elif 'modificar_stock' in request.POST:
+            stock = request.POST.get("stock")
+            if stock:
+                producto.stock = stock
 
         # Guardar el producto modificado
         producto.save()
@@ -190,7 +201,6 @@ def producto_edit(request):
         }
         return render(request, "pages/producto_edit.html", context)
 
-
 def login(request):
 
     return render(request, 'pages/login.html')
@@ -199,3 +209,38 @@ def logout(request):
     logout(request)
     return redirect('pages/login.html')
 
+def exito(request):
+
+    return render(request, 'pages/success.html')
+
+def mal(request):
+
+    return render(request, 'pages/failure.html')
+
+def pagar(request):
+    transaction = Transaction()
+    transaction.commerce_code = settings.TRANSBANK_COMMERCE_CODE
+    transaction.api_key = settings.TRANSBANK_API_KEY
+    transaction.enviroment = settings.TRANSBANK_ENVIRONMENT
+
+    response = transaction.create(
+        buy_order='order12345',
+        session_id='session12345',
+        amount=10000,
+        return_url='http://127.0.0.1:8000/main/transaccion_completa'
+    )
+    print(response)
+    return redirect(response['url'] + '?token_ws=' + response['token'])
+
+def transaccion_completa(request):
+    token_ws = request.GET.get('token_ws')
+    transaction = Transaction()
+    try:
+        result = transaction.commit(token_ws)
+        if result['status'] == 'AUTHORIZED':
+            return render(request, 'pages/success.html')
+        else:
+            reason = result.get('status', 'Unknown reason')
+            return render(request, 'pages/failure.html', {'reason': reason, 'result': result})
+    except Exception as e:
+        return render(request, 'pages/failure.html', {'reason': str(e)})
