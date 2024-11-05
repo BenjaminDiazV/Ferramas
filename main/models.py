@@ -15,6 +15,8 @@ class Producto(models.Model):
     marca = models.CharField(max_length=100,null=False)
     valor = models.IntegerField()
     stock = models.IntegerField(null=False, blank=True)
+    imagen = models.ImageField(upload_to='products/', blank=True, null=True)
+
 
     def __str__(self):
         return str(self.nom_producto)

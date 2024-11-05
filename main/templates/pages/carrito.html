@@ -17,33 +17,60 @@
     <main>
         <section class="border border-warning-subtle text-bg-dark p-3">
             <div class="row container-fluid justify-content-center align-content-center">
-
-                <div class="d-flex border border-warning-subtle text-bg-dark
-                col-12 col-md-10 col-lg-8">
-                    <div class="p-3">
-                        <img src="{% static 'images/Productos/Herr_1.jpg' %}" alt="">
-                    </div>
-                    <div class="p-3">
-                        <h2>Martillo</h2>
-                        <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, nemo aliquam, facilis voluptatem ullam corrupti sint numquam iste inventore nobis!</h6>
-                        <br>
-                        <br>
-                        <br>
-                        <h3>Precio: $ 10.000</h3>
-                    </div>
+                <div class="row container-fluid align-content-center col-12 col-md-2 col-lg-8">
+                    {% if cart %}
+                        {% for item in cart %}
+                            <div class="d-flex border border-warning-subtle text-bg-dark
+                            col-12 col-md-8 col-lg-10">
+                                <div class="p-3">
+                                    <img src="{{ item.image }}" alt="">
+                                </div>
+                                <div class="p-3">
+                                    <div>
+                                        <h2>{{ item.nombre }}</h2>
+                                    </div>
+                                    <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, nemo aliquam, facilis voluptatem ullam corrupti sint numquam iste inventore nobis!</h6>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <h2>Cantidad: {{ item.cantidad}}</h2>
+                                    <h3>Precio: $ {{ item.precio }}</h3>
+                                    <<form action="{% url 'eliminar_carrito' prod_id=item.id %}" method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>El carrito está vacío.</p>
+                    {% endif %}
                 </div>
-    
                 <div class="d-flex border border-warning-subtle text-bg-dark
-                col-12 col-md-2 col-lg-4 justify-content-center container">
+                col-12 col-md-5 col-lg-3 justify-content-center container">
                     <div class="row justify-content-center">
-                        <div class="col-12 d-flex h-75 p-3">
-                            <h3>Martillo... x1 $10.000</h3>
+                        <div class="col-12 d-flex h-auto p-3">
+                            {% if cart %}
+                                <ul>
+                                    {% for item in cart %}
+                                    <li>
+                                        <strong>{{ item.nombre }}</strong> - {{ item.cantidad}} x ${{ item.precio }} {{ moneda }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>El carrito está vacío.</p>
+                            {% endif %}
                         </div>
-                        <div class="col-12 d-flex justify-content-center h-25 p-3">
+                        <div class="row col-12 d-flex justify-content-center h-25">
+                            <h2 class="ps-3">
+                                Total: ${{ total_price }} {{ moneda }}
+                            </h2>
                             <button onclick = "window.location.href='{% url 'pagar' %}'">
                                 Pagar
                             </button>
-                            
                         </div>
                     </div>
                 </div>
