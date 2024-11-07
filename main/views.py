@@ -5,6 +5,7 @@ from transbank.webpay.webpay_plus.transaction import Transaction
 from django.conf import settings
 from datetime import date;
 import requests;
+import math
 import bcchapi;
 
 # Create your views here.
@@ -269,6 +270,8 @@ def mal(request):
 
 def pagar(request):
     cart = request.session.get('cart', {})
+    moneda = request.session.get('moneda', 'CLP')
+    valor_dolar = obtener_valor_dolar()
     total_amount = sum(float(item['precio']) * item['cantidad'] for item in cart.values())
 
     transaction = Transaction()
@@ -276,12 +279,20 @@ def pagar(request):
     transaction.api_key = settings.TRANSBANK_API_KEY
     transaction.enviroment = settings.TRANSBANK_ENVIRONMENT
 
-    response = transaction.create(
+    if moneda == 'USD':
+        response = transaction.create(
         buy_order='order12345',
         session_id='session12345',
-        amount= total_amount,
+        amount= math.trunc(round(total_amount / valor_dolar) ),
         return_url='http://127.0.0.1:8000/main/transaccion_completa'
-    )
+        )
+    else:
+        response = transaction.create(
+            buy_order='order12345',
+            session_id='session12345',
+            amount= total_amount,
+            return_url='http://127.0.0.1:8000/main/transaccion_completa'
+        )
     print(response)
     return redirect(response['url'] + '?token_ws=' + response['token'])
 
